@@ -20,9 +20,32 @@ namespace TowersOfHanoiGame
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static int TowerCapacity { get; set; }
+        public static int DiskCapacity { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void EndGame(object sender, RoutedEventArgs e)
+        {
+            //Todo Cleanup
+
+            ToggleButtons(Visibility.Collapsed, Visibility.Visible, true);
+        }
+
+        private void ToggleButtons(Visibility EndButton, Visibility StartButton, bool SettingsPanelState)
+        {
+            GameEnd.Visibility = EndButton;
+            GameStart.Visibility = StartButton;
+            SettingsPanel.IsEnabled = SettingsPanelState;
+        }
+
+        private void StartGame(object sender, RoutedEventArgs e)
+        {
+            ToggleButtons(Visibility.Visible, Visibility.Collapsed, false);
+            TowerCapacity = (int)TowerSlider.Value;
+            DiskCapacity = (int)HeightSlider.Value;
         }
     }
 }

@@ -6,7 +6,40 @@
         xmlns:local="clr-namespace:TowersOfHanoiGame"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources x:Uid="f">
+        <Style TargetType="Slider" x:Key="CustomSlider">
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="Minimum" Value="3"/>
+            <Setter Property="Maximum" Value="20"/>
+            <Setter Property="TickPlacement" Value="Both"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="MenuPanel" Grid.Row="0" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" x:Name="SettingsPanel">
+                <StackPanel>
+                    <Slider x:Name="TowerSlider" Style="{DynamicResource CustomSlider}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Towers: "/>
+                        <Label Content="X" x:Name="TowerCap"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel>
+                    <Slider x:Name="HeightSlider" Style="{DynamicResource CustomSlider}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Height: "/>
+                        <Label Content="{Binding Value,ElementName=HeightSlider}" x:Name="HeightCap"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        <Button x:Name="GameStart" Content=" Start Game " Click="StartGame"/>
+            <Button x:Name="GameEnd" Content=" End Game " Visibility="Hidden" Click="EndGame"/>
+        </StackPanel>
+
     </Grid>
 </Window>
