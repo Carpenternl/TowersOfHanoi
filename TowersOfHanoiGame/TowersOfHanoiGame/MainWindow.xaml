@@ -1,4 +1,5 @@
-﻿<Window x:Class="TowersOfHanoiGame.MainWindow"
+﻿
+    <Window x:Class="TowersOfHanoiGame.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,7 +27,7 @@
                     <Slider x:Name="TowerSlider" Style="{DynamicResource CustomSlider}"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Towers: "/>
-                        <Label Content="X" x:Name="TowerCap"/>
+                        <Label Content="{Binding Value,ElementName=TowerSlider}" x:Name="TowerCap"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel>
@@ -40,6 +41,10 @@
         <Button x:Name="GameStart" Content=" Start Game " Click="StartGame"/>
             <Button x:Name="GameEnd" Content=" End Game " Visibility="Hidden" Click="EndGame"/>
         </StackPanel>
+        <ScrollViewer  Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="TowerPanel" Orientation="Horizontal">
+            </StackPanel>
+        </ScrollViewer>
 
     </Grid>
 </Window>

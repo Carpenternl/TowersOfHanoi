@@ -20,6 +20,9 @@ namespace TowersOfHanoiGame
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Tower[] Towers { get; set; }
+        public Disk[] Disks { get; set; }
+
         public static int TowerCapacity { get; set; }
         public static int DiskCapacity { get; set; }
         public MainWindow()
@@ -46,6 +49,25 @@ namespace TowersOfHanoiGame
             ToggleButtons(Visibility.Visible, Visibility.Collapsed, false);
             TowerCapacity = (int)TowerSlider.Value;
             DiskCapacity = (int)HeightSlider.Value;
+            Towers = new Tower[TowerCapacity];
+            for (int i = 0; i < TowerCapacity; i++)
+            {
+                Towers[i] = new Tower();
+                Towers[i].Click += TowerClick;
+                this.TowerPanel.Children.Add(Towers[i]);
+            }
+            this.Disks = new Disk[DiskCapacity];
+            for (int i = DiskCapacity-1; i >=0; i--)
+            {
+
+                Disks[i] = new Disk(i+1);
+                bool stacked = Towers[0].TryStack(Disks[i]);
+            }
+        }
+
+        private void TowerClick(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
