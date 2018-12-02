@@ -31,9 +31,12 @@ namespace TowersOfHanoiGame
         {
             InitializeComponent();
             this.Weight = i;
-            this.WeightDisp.Content = i;
-            c.Width = new GridLength(i, GridUnitType.Star);
-            LeftCol.Width = RightCol.Width = new GridLength((MainWindow.DiskCapacity - i+1)/2, GridUnitType.Star);
+            this.WeightDisp.Content = Weight;
+            int Maxweight = MainWindow.DiskCapacity + 1;
+            double CenterRatio =(double)Weight / (double)Maxweight;
+            double OuterRatio = 1 - CenterRatio;
+            c.Width = new GridLength((1/OuterRatio)*2, GridUnitType.Star);
+            LeftCol.Width = RightCol.Width = new GridLength((1/CenterRatio), GridUnitType.Star);
         }
         #region '<' Operator
         public static bool operator >(Disk a, Disk b)

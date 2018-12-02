@@ -23,8 +23,12 @@ namespace TowersOfHanoiGame
         public Tower[] Towers { get; set; }
         public Disk[] Disks { get; set; }
 
+        public Tower Origin { get; set; }
+
         public static int TowerCapacity { get; set; }
         public static int DiskCapacity { get; set; }
+        public Color DiskOriginColor { get { return Colors.Green; } }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -54,20 +58,89 @@ namespace TowersOfHanoiGame
             {
                 Towers[i] = new Tower();
                 Towers[i].Click += TowerClick;
+                Towers[i].MouseEnter += CheckTower;
                 this.TowerPanel.Children.Add(Towers[i]);
             }
             this.Disks = new Disk[DiskCapacity];
-            for (int i = DiskCapacity-1; i >=0; i--)
+            for (int i = DiskCapacity - 1; i >= 0; i--)
             {
 
-                Disks[i] = new Disk(i+1);
-                bool stacked = Towers[0].TryStack(Disks[i]);
+                Disks[i] = new Disk(i + 1);
+                bool stacked = Towers[0].TryPush(Disks[i]);
             }
+        }
+
+        private void CheckTower(object sender, MouseEventArgs e)
+        {
+            if (Origin is null)
+                return;
+            Tower Target = sender as Tower;
+            if (Target.Disks.Count <= 0)
+            {
+
+            }
+
         }
 
         private void TowerClick(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            Tower Target = sender as Tower;
+
+            if (Origin is null)
+            {
+                SetOrigin(Target);
+            }
+            else
+            {
+                if (Target != Origin)
+                {
+                    Disk TransferrableDisk;
+                    if (Origin.TryPop(out TransferrableDisk))
+                    {
+                        Disk DiskToCompareTo;
+                        if (Target.Disks.Count <= 0)
+                        {
+                            Target.TryPush(TransferrableDisk);
+                        }
+                        else
+                        {
+
+                            if (Target.TryPeek(out DiskToCompareTo))
+                            {
+                                if (DiskToCompareTo > TransferrableDisk)
+                                {
+                                    Target.TryPush(TransferrableDisk);
+                                    
+                                }
+                                else
+                                {
+                                    Origin.TryPush(TransferrableDisk);
+                                }
+                            }
+                            else
+                            {
+                                Origin.TryPush(TransferrableDisk);
+                            }
+                        }
+                    }
+                    Origin = null;
+                }
+            }
+        }
+
+        private bool SetOrigin(Tower target)
+        {
+            Disk N;
+            if (target.TryPop(out N))
+            {
+                Label ManipulateTarget = N.WeightDisp;
+                ManipulateTarget.BorderBrush = new SolidColorBrush(DiskOriginColor);
+                ManipulateTarget.BorderThickness = new Thickness(3.0);
+                Origin = target;
+                target.TryPush(N);
+                return true;
+            }
+            return false;
         }
     }
 }

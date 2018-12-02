@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TowersOfHanoiGame"
              mc:Ignorable="d" 
-             d:DesignHeight="100"  d:DesignWidth="100" MouseLeftButtonUp="UserControl_MouseLeftButtonUp" BorderBrush="Black" Width="500" BorderThickness="3,0" MaxWidth="500" MinWidth="200">
-    <Grid x:Name="Container" ShowGridLines="True">
+             d:DesignHeight="100"  d:DesignWidth="100" MouseLeftButtonUp="ClickPass" BorderBrush="Black" Background="Transparent" Width="500" BorderThickness="3,0" MaxWidth="500" MinWidth="200">
+    <Grid x:Name="Container" Background="Transparent">
             
     </Grid>
 </UserControl>

@@ -31,19 +31,15 @@ namespace TowersOfHanoiGame
         public Tower()
         {
             InitializeComponent();
+            Disks = new Stack<Disk>(MainWindow.DiskCapacity);
             for (int i = 0; i < MainWindow.DiskCapacity; i++)
             {
                 Container.RowDefinitions.Add(new RowDefinition());
             }
         }
 
-        internal bool TryStack(Disk disk)
+        internal bool TryPush(Disk disk)
         {
-            if(Disks is null)
-            {
-                Disks = new Stack<Disk>(MainWindow.DiskCapacity);
-            }
-
             if(Disks.Count<=0 || Disks.Peek() > disk)
             {
                 Disks.Push(disk);
@@ -54,9 +50,30 @@ namespace TowersOfHanoiGame
             return false;
         }
 
-        private void UserControl_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ClickPass(object sender, MouseButtonEventArgs e)
         {
             Click(sender, e);
+        }
+
+        internal bool TryPop(out Disk n)
+        {
+            n = new Disk();
+            if (Disks is null)
+                return false;
+            if (Disks.Count <= 0)
+                return false;
+            n = Disks.Pop();
+            Container.Children.Remove(n);
+            return true;
+        }
+
+        internal bool TryPeek(out Disk transferrableDisk)
+        {
+            transferrableDisk = new Disk();
+            if (Disks.Count <= 0)
+                return false;
+            transferrableDisk = Disks.Peek();
+            return true;
         }
     }
 }
