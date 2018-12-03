@@ -27,7 +27,6 @@ namespace TowersOfHanoiGame
         public delegate void ClickHandler(object sender, MouseButtonEventArgs e);
         public event ClickHandler Click;
 
-
         public Tower()
         {
             InitializeComponent();
@@ -58,8 +57,6 @@ namespace TowersOfHanoiGame
         internal bool TryPop(out Disk n)
         {
             n = new Disk();
-            if (Disks is null)
-                return false;
             if (Disks.Count <= 0)
                 return false;
             n = Disks.Pop();
@@ -67,12 +64,12 @@ namespace TowersOfHanoiGame
             return true;
         }
 
-        internal bool TryPeek(out Disk transferrableDisk)
+        internal bool TryPeek(out Disk diskArg)
         {
-            transferrableDisk = new Disk();
+            diskArg = new Disk();
             if (Disks.Count <= 0)
                 return false;
-            transferrableDisk = Disks.Peek();
+            diskArg = Disks.Peek();
             return true;
         }
     }

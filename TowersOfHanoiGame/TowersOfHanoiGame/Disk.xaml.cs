@@ -32,7 +32,7 @@ namespace TowersOfHanoiGame
             InitializeComponent();
             this.Weight = i;
             this.WeightDisp.Content = Weight;
-            int Maxweight = MainWindow.DiskCapacity + 1;
+            double Maxweight = MainWindow.DiskCapacity+1;
             double CenterRatio =(double)Weight / (double)Maxweight;
             double OuterRatio = 1 - CenterRatio;
             c.Width = new GridLength((1/OuterRatio)*2, GridUnitType.Star);

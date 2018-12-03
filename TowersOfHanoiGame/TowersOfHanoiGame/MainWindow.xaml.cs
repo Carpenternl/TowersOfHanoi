@@ -29,6 +29,8 @@ namespace TowersOfHanoiGame
         public static int DiskCapacity { get; set; }
         public Color DiskOriginColor { get { return Colors.Green; } }
 
+        public Color DefaultDiskBorderColor { get { return Colors.Black; } }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -70,62 +72,65 @@ namespace TowersOfHanoiGame
             }
         }
 
+        private void checktowerEnd(object sender, MouseEventArgs e)
+        {
+        }
+
         private void CheckTower(object sender, MouseEventArgs e)
         {
-            if (Origin is null)
-                return;
             Tower Target = sender as Tower;
-            if (Target.Disks.Count <= 0)
-            {
-
-            }
-
         }
 
         private void TowerClick(object sender, MouseButtonEventArgs e)
         {
-            Tower Target = sender as Tower;
 
+            Tower Destination = sender as Tower;
             if (Origin is null)
             {
-                SetOrigin(Target);
+                SetOrigin(Destination);
             }
             else
             {
-                if (Target != Origin)
+                Disk DiskToMove;
+                if (Origin != Destination && Origin.TryPop(out DiskToMove))
                 {
-                    Disk TransferrableDisk;
-                    if (Origin.TryPop(out TransferrableDisk))
+                    Disk DiskBase;
+                    if (Destination.TryPeek(out DiskBase))
                     {
-                        Disk DiskToCompareTo;
-                        if (Target.Disks.Count <= 0)
+                        if (DiskBase > DiskToMove)
                         {
-                            Target.TryPush(TransferrableDisk);
+                            Destination.TryPush(DiskToMove);
                         }
                         else
                         {
-
-                            if (Target.TryPeek(out DiskToCompareTo))
-                            {
-                                if (DiskToCompareTo > TransferrableDisk)
-                                {
-                                    Target.TryPush(TransferrableDisk);
-                                    
-                                }
-                                else
-                                {
-                                    Origin.TryPush(TransferrableDisk);
-                                }
-                            }
-                            else
-                            {
-                                Origin.TryPush(TransferrableDisk);
-                            }
+                            Origin.TryPush(DiskToMove);
                         }
                     }
-                    Origin = null;
+                    else
+                    {
+                        Destination.TryPush(DiskToMove);
+                    }
+                }
+                UnsetOrigin(Destination);
+
+                if (Towers[Towers.Length-1].Disks.Count == Disks.Length)
+                {
+                    MessageBox.Show("SUCCESS");
                 }
             }
+        }
+
+        private bool UnsetOrigin(Tower target)
+        {
+            Disk N;
+            if (target.TryPeek(out N))
+            {
+                Label ManipulateTarget = N.WeightDisp;
+                ManipulateTarget.BorderBrush = new SolidColorBrush(DefaultDiskBorderColor);
+                Origin = null;
+                return true;
+            }
+            return false;
         }
 
         private bool SetOrigin(Tower target)
@@ -144,3 +149,4 @@ namespace TowersOfHanoiGame
         }
     }
 }
+
