@@ -12,6 +12,6 @@
             <ColumnDefinition x:Name="c"/>
             <ColumnDefinition x:Name="RightCol" />
         </Grid.ColumnDefinitions>
-        <Label x:Name="WeightDisp" Grid.Column="1" Background="Black" Foreground="White" Content="X" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label x:Name="WeightDisp" Grid.Column="1" BorderBrush="Black"  BorderThickness="2" Content="X" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
     </Grid>
 </UserControl>

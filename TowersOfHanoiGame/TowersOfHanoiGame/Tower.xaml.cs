@@ -20,6 +20,7 @@ namespace TowersOfHanoiGame
     /// </summary>
     public partial class Tower : UserControl
     {
+
         private int TotalRows { get { return this.Container.RowDefinitions.Count(); } }
 
         public Stack<Disk> Disks {get; set;}

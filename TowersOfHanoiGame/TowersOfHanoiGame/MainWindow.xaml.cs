@@ -31,6 +31,8 @@ namespace TowersOfHanoiGame
 
         public Color DefaultDiskBorderColor { get { return Colors.Black; } }
 
+        private Disk CurrentDiskOrigin { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,7 +41,9 @@ namespace TowersOfHanoiGame
         private void EndGame(object sender, RoutedEventArgs e)
         {
             //Todo Cleanup
-
+            this.Towers = null;
+            this.Disks = null;
+            this.TowerPanel.Children.Clear();
             ToggleButtons(Visibility.Collapsed, Visibility.Visible, true);
         }
 
@@ -78,16 +82,42 @@ namespace TowersOfHanoiGame
 
         private void CheckTower(object sender, MouseEventArgs e)
         {
-            Tower Target = sender as Tower;
+            if (CurrentDiskOrigin is null)
+                return;
+            Tower target = sender as Tower;
+            Disk TargetDisk;
+            if (target.TryPeek(out TargetDisk))
+            {
+                if (TargetDisk.Weight < CurrentDiskOrigin.Weight)
+                {
+                    UpdateUI(CurrentDiskOrigin.WeightDisp, Colors.Transparent, Colors.Red);
+                }
+                else
+                {
+                    UpdateUI(CurrentDiskOrigin.WeightDisp, Colors.Green, Colors.Blue);
+                }
+            }
+            else
+            {
+                UpdateUI(CurrentDiskOrigin.WeightDisp, Colors.Green, Colors.Blue);
+            }
         }
 
+        // Tower interaction logic
         private void TowerClick(object sender, MouseButtonEventArgs e)
         {
-
+            //Get the Caller
             Tower Destination = sender as Tower;
+            Disk TopDisk;
+            // We should pick an origin if we haven't already
             if (Origin is null)
             {
                 SetOrigin(Destination);
+                if (Destination.TryPeek(out TopDisk))
+                {
+                    CurrentDiskOrigin = TopDisk;
+                    UpdateUI(CurrentDiskOrigin.WeightDisp, Colors.Green, Colors.Blue);
+                }
             }
             else
             {
@@ -111,13 +141,23 @@ namespace TowersOfHanoiGame
                         Destination.TryPush(DiskToMove);
                     }
                 }
-                UnsetOrigin(Destination);
+                UpdateUI(CurrentDiskOrigin.WeightDisp, Colors.Transparent, Colors.Black);
+                CurrentDiskOrigin = null;
+                Origin = null;
 
                 if (Towers[Towers.Length-1].Disks.Count == Disks.Length)
                 {
                     MessageBox.Show("SUCCESS");
+                    EndGame(this, e);
+
                 }
             }
+        }
+
+        private void UpdateUI(Control element, Color fill, Color border)
+        {
+            element.Background = new  SolidColorBrush(fill);
+            element.BorderBrush = new SolidColorBrush(border);
         }
 
         private bool UnsetOrigin(Tower target)
@@ -138,9 +178,9 @@ namespace TowersOfHanoiGame
             Disk N;
             if (target.TryPop(out N))
             {
-                Label ManipulateTarget = N.WeightDisp;
-                ManipulateTarget.BorderBrush = new SolidColorBrush(DiskOriginColor);
-                ManipulateTarget.BorderThickness = new Thickness(3.0);
+                //Label ManipulateTarget = N.WeightDisp;
+                //ManipulateTarget.BorderBrush = new SolidColorBrush(DiskOriginColor);
+                //ManipulateTarget.BorderThickness = new Thickness(3.0);
                 Origin = target;
                 target.TryPush(N);
                 return true;
